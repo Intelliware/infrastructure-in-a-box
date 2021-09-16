@@ -8,8 +8,8 @@ read PROJECT_PREFIX
 echo "Please specify the AWS region you would like your app to reside in, e.g. us-east-2: "
 read REGION
 
-sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state-exp/main.tf
-sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state-exp/main.tf
+sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
+sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
 
 echo -e "${LIGHTBLUE}"
 echo "=============================================================="

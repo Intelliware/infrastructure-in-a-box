@@ -1,22 +1,22 @@
-terraform {
-  backend "s3" {
-    // Extract out this bucket key
-    bucket = "iiab-terraform-state"
-    key    = "state/terraform.tfstate"
-    // Make this configurable
-    region = "us-east-2"
-
-    dynamodb_table = "iiab-terraform-locks"
-    encrypt        = true
-  }
-}
+#terraform {
+#  backend "s3" {
+#    // Extract out this bucket key
+#    bucket = "{{PROJECT_PREFIX}}-terraform-state"
+#    key    = "state/terraform.tfstate"
+#    // Make this configurable
+#    region = "{{AWS_REGION}}"
+#
+#    dynamodb_table = "{{PROJECT_PREFIX}}-terraform-locks"
+#    encrypt        = true
+#  }
+#}
 
 provider "aws" {
-  region = "us-east-2"
+  region = "{{AWS_REGION}}"
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "iiab-terraform-state"
+  bucket = "{{PROJECT_PREFIX}}-terraform-state"
 
   lifecycle {
     prevent_destroy = true
@@ -39,7 +39,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
   hash_key = "LockID"
   // What is this for?
   billing_mode = "PAY_PER_REQUEST"
-  name         = "iiab-terraform-locks"
+  name         = "{{PROJECT_PREFIX}}-terraform-locks"
 
   attribute {
     // What is this for?

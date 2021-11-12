@@ -1,0 +1,39 @@
+@startuml
+!include https://raw.githubusercontent.com/Intelliware/iwd-plantuml-styles/master/iwd_basic_styles.puml
+!include /Users/holmesbc/Code/internal/iwd-plantuml-styles/icons/aws/aws-logo-sprite.puml
+
+skinparam node {
+    FontColor $IWD_MEDIUM_GREY
+    BackgroundColor transparent
+    BorderColor $IWD_MEDIUM_GREY
+}
+
+skinparam rectangle<<vpc>> {
+    FontColor $IWD_MEDIUM_LIGHT_GREY
+    BackgroundColor transparent
+    BorderColor $IWD_MEDIUM_LIGHT_GREY
+    roundcorner 20
+    shadowing false
+}
+
+title ==My Fine Application Deployment Diagram
+
+IwdIconOnly("Internet", "internet", "", <img:https://raw.githubusercontent.com/Intelliware/iwd-plantuml-styles/master/icons/internet-cloud.png>)
+
+rectangle "//<size:12><<Cloud Host>></size>//\n==Amazon Web Services\n<$aws>" <<light>> as aws {
+
+    rectangle "==Virtual Private Cloud" <<vpc>> as vpc {
+
+    node "==My Application Cluster\n<size:12>[ECS Cluster]</size>\n<img:https://raw.githubusercontent.com/Intelliware/iwd-plantuml-styles/master/icons/aws/aws-ecs-iwd.png>" as ecsCluster {
+        IwdArtifact("My Fine Application", "app", "Moleculer Application", <img:https://raw.githubusercontent.com/Intelliware/iwd-plantuml-styles/master/icons/docker-container.png>, "My Fine application provides the access and does all the things. It also enables and simplifies.", "Docker Container")
+    }
+    
+    IwdDatabase("My Fine Database", "db", "AWS RDS for PostgreSQL", <img:https://raw.githubusercontent.com/Intelliware/iwd-plantuml-styles/master/icons/aws/aws-rds-iwd.png>, "My Fine database stores all the data to do the thing.")
+
+    }
+}
+
+IwdArrow(internet, app, "uses", "HTTPS", "down")
+IwdArrow(app, db, "persists data", "psql", "down")
+
+@enduml

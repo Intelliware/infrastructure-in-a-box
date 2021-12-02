@@ -8,8 +8,13 @@ read PROJECT_PREFIX
 echo "Please specify the AWS region you would like your app to reside in, e.g. us-east-2: "
 read REGION
 
+# Insert project prefix and AWS region into state terraform file
 sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
 sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
+
+# Insert project prefix and AWS region into network terraform file
+sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' network/main.tf
+sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' network/main.tf
 
 echo -e "${LIGHTBLUE}"
 echo "=============================================================="
@@ -31,3 +36,13 @@ echo -e "${NO_COLOUR}"
 
 #read -p 'PRESS ANY KEY'
 terraform init -force-copy
+
+echo -e "${LIGHTBLUE}"
+echo "================"
+echo "| Creating VPC |"
+echo "================"
+echo -e "${NO_COLOUR}"
+
+cd ../network || exit
+terraform init
+terraform apply -auto-approve

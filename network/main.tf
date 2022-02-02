@@ -19,6 +19,7 @@ resource "aws_vpc" "main_vpc" {
     Name = "{{PROJECT_PREFIX}}-VPC"
   }
 
+  enable_dns_hostnames = true
   cidr_block = "10.1.0.0/16"
 }
 
@@ -36,7 +37,7 @@ resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.main_vpc.id
   availability_zone = data.aws_availability_zones.regional_availability_zones.names[count.index]
   cidr_block = var.public_subnets[count.index]
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
   tags = {
     Name = "{{PROJECT_PREFIX}}-PublicSubnet-AZ${local.az_index_to_letter_map[count.index]}"
   }

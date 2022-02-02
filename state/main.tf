@@ -3,7 +3,6 @@
 #    // Extract out this bucket key
 #    bucket = "{{PROJECT_PREFIX}}-terraform-state"
 #    key    = "state/terraform.tfstate"
-#    // Make this configurable
 #    region = "{{AWS_REGION}}"
 #
 #    dynamodb_table = "{{PROJECT_PREFIX}}-terraform-locks"

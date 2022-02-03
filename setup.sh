@@ -9,12 +9,12 @@ echo "Please specify the AWS region you would like your app to reside in, e.g. u
 read REGION
 
 # Insert project prefix and AWS region into state terraform file
-sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
-sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
+sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/state/main.tf
+sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' terraform/state/main.tf
 
 # Insert project prefix and AWS region into network terraform file
-sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' network/main.tf
-sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' network/main.tf
+sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/network/main.tf
+sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' terraform/network/main.tf
 
 echo -e "${LIGHTBLUE}"
 echo "=============================================================="
@@ -22,7 +22,7 @@ echo "| Creating S3 bucket and Dynamo DB table for terraform state |"
 echo "=============================================================="
 echo -e "${NO_COLOUR}"
 
-cd state || exit
+cd terraform/state || exit
 terraform init
 terraform apply -auto-approve
 

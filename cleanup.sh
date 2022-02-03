@@ -1,6 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
-cd state || exit
+cd terraform/state || exit
 rm -rf .terraform
 rm terraform.tfstate
 rm terraform.tfstate.backup

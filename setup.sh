@@ -8,8 +8,14 @@ read PROJECT_PREFIX
 echo "Please specify the AWS region you would like your app to reside in, e.g. us-east-2: "
 read REGION
 
-sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
-sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
+    sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
+else
+    sed -i 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' state/main.tf
+    sed -i 's/{{AWS_REGION}}/'$REGION'/g' state/main.tf
+fi
+
 
 echo -e "${LIGHTBLUE}"
 echo "=============================================================="
@@ -21,7 +27,7 @@ cd state || exit
 terraform init
 terraform apply -auto-approve
 
-sed -i '' 's/#//g' main.tf
+sed -i 's/#//g' main.tf
 
 echo -e "${LIGHTBLUE}"
 echo "=========================================="

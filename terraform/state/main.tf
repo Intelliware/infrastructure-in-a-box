@@ -3,7 +3,6 @@
 #    // Extract out this bucket key
 #    bucket = "{{PROJECT_PREFIX}}-terraform-state"
 #    key    = "state/terraform.tfstate"
-#    // Make this configurable
 #    region = "{{AWS_REGION}}"
 #
 #    dynamodb_table = "{{PROJECT_PREFIX}}-terraform-locks"
@@ -19,7 +18,7 @@ resource "aws_s3_bucket" "terraform_state" {
   bucket = "{{PROJECT_PREFIX}}-terraform-state"
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   versioning {

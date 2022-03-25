@@ -249,3 +249,11 @@ resource "aws_security_group_rule" "public_egress" {
   to_port = 0
   type              = "egress"
 }
+
+output "public_subnet_ids" {
+  value = aws_subnet.public[*].id
+}
+
+output "private_subnet_ids" {
+  value = aws_subnet.private[*].id
+}

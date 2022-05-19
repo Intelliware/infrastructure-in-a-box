@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 LIGHTBLUE='\033[1;34m'
 NO_COLOUR='\033[0m'
 

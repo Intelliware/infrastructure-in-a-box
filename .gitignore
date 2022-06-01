@@ -1,5 +1,6 @@
 # IntelliJ files
 .idea/
+*.iml
 =======
 # Local .terraform directories
 **/.terraform/*

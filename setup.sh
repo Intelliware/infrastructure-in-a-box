@@ -36,7 +36,12 @@ cd terraform/state || exit
 terraform init
 terraform apply -auto-approve
 
-sed -i 's/#//g' main.tf
+# Uncomment terraform block in state main.tf file
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's/#//g' main.tf
+else
+    sed -i 's/#//g' main.tf
+fi
 
 echo -e "${LIGHTBLUE}"
 echo "=========================================="

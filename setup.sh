@@ -16,6 +16,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Insert project prefix and AWS region into network terraform file
     sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/network/main.tf
     sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' terraform/network/main.tf
+
+    # Insert project prefix and AWS region into db terraform file
+    sed -i '' 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/db/main.tf
+    sed -i '' 's/{{AWS_REGION}}/'$REGION'/g' terraform/db/main.tf
 else
     # Insert project prefix and AWS region into state terraform file
     sed -i 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/state/main.tf
@@ -24,6 +28,10 @@ else
     # Insert project prefix and AWS region into network terraform file
     sed -i 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/network/main.tf
     sed -i 's/{{AWS_REGION}}/'$REGION'/g' terraform/network/main.tf
+
+    # Insert project prefix and AWS region into db terraform file
+    sed -i 's/{{PROJECT_PREFIX}}/'$PROJECT_PREFIX'/g' terraform/db/main.tf
+    sed -i 's/{{AWS_REGION}}/'$REGION'/g' terraform/db/main.tf
 fi
 
 echo -e "${LIGHTBLUE}"
@@ -61,3 +69,15 @@ echo -e "${NO_COLOUR}"
 cd ../network || exit
 terraform init
 terraform apply -auto-approve
+
+echo -e "${LIGHTBLUE}"
+echo "================"
+echo "| Creating DB  |"
+echo "================"
+echo -e "${NO_COLOUR}"
+
+cd ../db || exit
+terraform init
+terraform apply -auto-approve
+
+terraform output -json test_db_endpoint

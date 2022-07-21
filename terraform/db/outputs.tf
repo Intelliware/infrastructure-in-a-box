@@ -1,4 +1,4 @@
-output "master_db_instance_address" {
+output "test_db_endpoint" {
   description = "The address of the RDS instance"
-  value       = module.master.db_instance_address
+  value       = aws_db_instance.test-db.endpoint
 }

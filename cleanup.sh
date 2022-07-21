@@ -13,6 +13,16 @@ terraform destroy -auto-approve
 rm -rf .terraform
 
 echo -e "${LIGHTBLUE}"
+echo "==========================================="
+echo "| Destroying DB resources                 |"
+echo "==========================================="
+echo -e "${NO_COLOUR}"
+
+cd ../db || exit
+terraform destroy -auto-approve
+rm -rf .terraform
+
+echo -e "${LIGHTBLUE}"
 echo "=============================================="
 echo "| Migrating terraform state from s3 to local |"
 echo "=============================================="

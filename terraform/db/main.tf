@@ -1,19 +1,17 @@
 terraform {
   backend "s3" {
     // Extract out this bucket key
-    bucket = "iiab-terraform-state"
-    key    = "ecr/terraform.tfstate"
-    // Make this configurable
-    region = "us-east-2"
+    bucket = "{{PROJECT_PREFIX}}-terraform-state"
+    key    = "db/terraform.tfstate"
+    region = "{{AWS_REGION}}"
 
-    dynamodb_table = "iiab-terraform-locks"
+    dynamodb_table = "{{PROJECT_PREFIX}}-terraform-locks"
     encrypt        = true
   }
 }
 
 provider "aws" {
-  // Make this configurable
-  region = "us-east-2"
+  region = "{{AWS_REGION}}"
 }
 
 resource "aws_db_instance" "test-db" {
@@ -21,9 +19,10 @@ resource "aws_db_instance" "test-db" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t3.micro"
-  name                 = "mydb"
+  db_name              = "mydb"
   username             = "foo"
   password             = "exposingDefaultsIsBad"
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
+  apply_immediately = true
 }

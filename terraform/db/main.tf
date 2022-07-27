@@ -15,14 +15,15 @@ provider "aws" {
 }
 
 resource "aws_db_instance" "test-db" {
-  allocated_storage    = 10 // gb
-  engine               = "mysql"
-  engine_version       = "5.7"
+  allocated_storage    = 20 // gb
+  engine               = "postgres"
+  engine_version       = "13.4"
   instance_class       = "db.t3.micro"
-  db_name              = "mydb"
+  db_name              = "{{PROJECT_PREFIX}}db"
+  identifier           = "{{PROJECT_PREFIX}}db"
   username             = "foo"
   password             = "exposingDefaultsIsBad"
-  parameter_group_name = "default.mysql5.7"
+  parameter_group_name = "default.postgres13"
   skip_final_snapshot  = true
   apply_immediately = true
 }

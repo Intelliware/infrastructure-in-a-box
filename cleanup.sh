@@ -7,3 +7,6 @@ rm terraform.tfstate.backup
 
 cd ../network || exit
 rm -rf .terraform
+
+cd ../eks || exit
+rm -rf .terraform

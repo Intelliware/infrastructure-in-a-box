@@ -90,6 +90,7 @@ resource "aws_iam_role_policy_attachment" "amazonEKS_CNI_Policy" {
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "{{PROJECT_PREFIX}}-eks-cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   vpc_config {
     subnet_ids = concat(data.terraform_remote_state.network.outputs.public_subnet_ids, data.terraform_remote_state.network.outputs.private_subnet_ids)
     endpoint_private_access = true
@@ -97,6 +98,10 @@ resource "aws_eks_cluster" "eks_cluster" {
     public_access_cidrs = ["0.0.0.0/0"]
   }
 
+#  kubernetes_network_config {
+#    service_ipv4_cidr = "10.1.64.0/24"
+#  }
+#
   depends_on = [
     aws_iam_role_policy_attachment.amazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.amazonEKSVPCResourceController,
@@ -106,13 +111,19 @@ resource "aws_eks_cluster" "eks_cluster" {
 resource "aws_eks_node_group" "eks_worker_node_group" {
   cluster_name = aws_eks_cluster.eks_cluster.name
   node_role_arn = aws_iam_role.eks_worker_node_role.arn
-  subnet_ids = concat(data.terraform_remote_state.network.outputs.public_subnet_ids, data.terraform_remote_state.network.outputs.private_subnet_ids)
+#  subnet_ids = concat(data.terraform_remote_state.network.outputs.public_subnet_ids, data.terraform_remote_state.network.outputs.private_subnet_ids)
+  subnet_ids = data.terraform_remote_state.network.outputs.private_subnet_ids
   // Make these configurable
+  instance_types = ["t3.micro"]
   scaling_config {
-    desired_size = 3
-    max_size     = 3
-    min_size     = 3
+    desired_size = 2
+    max_size     = 2
+    min_size     = 2
   }
+  timeouts {
+    create = "10m"
+  }
+
 
   depends_on = [
     aws_iam_role_policy_attachment.amazonEKSWorkerNodePolicy,
@@ -127,4 +138,8 @@ output "kubernetes_endpoint" {
 
 output "kubeconfig-certificate-authority-data" {
   value = aws_eks_cluster.eks_cluster.certificate_authority[0].data
+}
+
+output "worker_nodes" {
+  value = aws_eks_node_group.eks_worker_node_group.resources
 }
